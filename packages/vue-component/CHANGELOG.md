@@ -1,5 +1,58 @@
 # Changelog
 
+## 0.10.6 - 2017-08-24
+
+ - #227 Initializes HMR dev server using the configuration specified in meteor server (thanks @gbisheimer)
+ - #243 and #244 Better module handling in .vue files (thanks @GeoffreyBooth)
+
+## 0.10.5 - 2017-08-11
+
+ - Enable babelrc for vue files
+
+## 0.10.3 - 2017-07-16
+
+ - Fixed component auto naming
+
+## 0.10.1 - 2017-07-15
+
+ - Support `>>>` and `/deep/` scope-piercing combinators inside `<style scoped>`
+ - Animation keyframes inside `<style scoped>` will now become scoped. **Note**: this only works if the keyframes declaration and the animation rules are inside the same `<style>` block.
+
+## 0.10.0 - 2017-06-30
+
+ - Support Meteor 1.5 code-splitting
+
+## 0.9.0 - 2017-04-27
+
+ - Components now support `src="file"` attribute on `<template>`, `<script>` and `<style>` tags. Please update the language packages you are using.
+ - Updated to Vue 2.3.0
+ - Fixed automatic IP detection on non-english Windows systems
+ - Rewrote HTML parsing from scratch (fix multiple issues)
+ - Compilation errors and warnings are sent to the client (in dev mode)
+
+## 0.8.16 - 2017-04-14
+
+ - Vue 2.2.6 support
+ - Automatic IP detection for HMR to work on other devices in the local network.
+
+## 0.8.6 - 2017-02-21
+
+ - CSS Modules: New `<style>` attribute `module` & `$style` component property (see [PR](https://github.com/Akryum/meteor-vue-component/pull/117)). Thanks @nathantreid
+ - Better Meteor port detection and new `VUE_DEV_SERVER_URL` env variable (see [PR](https://github.com/Akryum/meteor-vue-component/pull/100)). Thanks @MartinBucko
+
+## 0.8.5
+
+ - Initial `lang="css"` support.
+
+## 0.8.4 - 2017-02-02
+
+ - Fixed [#101](https://github.com/Akryum/meteor-vue-component/issues/101) (for Meteor 1.4.2.4+)
+
+## 0.8.3 - 2017-02-01
+
+ - Relaxed vue-template-compiler into `akryum:vue-compiler`
+ - Fixed manually imported component files in production mode. Need an upstream fix for auto-imported components.
+
 ## 0.8.1 - 2017-01-04
 
  - Performance improvements and es2015 transpilation in templates for `.vue` files with `vue-template-es2015-compiler`.

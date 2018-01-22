@@ -2,14 +2,14 @@
 
 Compatibility: **Vue 1.x, Vue 2.x**
 
-It allows you to write your components in [this format](https://vuejs.org/guide/application.html#Single-File-Components) (with hot-reloading support):
+It allows you to write your components in [this format](https://vuejs.org/v2/guide/single-file-components.html) (with hot-reloading support):
 ![screenshot](http://blog.evanyou.me/images/vue-component.png)
 
 ## Installation
 
-
-    meteor add akryum:vue akryum:vue-component
-
+```
+meteor add akryum:vue-component
+```
 
 ## Usage
 
@@ -32,8 +32,17 @@ Now, whenever you save a component file, it will be instantly updated on all the
 
 By default, the package will try to use the Meteor port + 3, but you can override the port used by the hot-reloading server with the `HMR_PORT` environment variable:
 
-    set HMR_PORT=4242
+```
+cross-env HMR_PORT=4242
+```
 
+#### Remote devices
+
+If you have an issue with HMR not connecting from remote devices (e.g. styles are not loading), set the `HMR_URL` env. variable with the IP of your computer. For example:
+
+```
+cross-env HMR_URL=192.168.1.42
+```
 
 ### File structure
 
@@ -72,25 +81,106 @@ a {
 </style>
 ```
 
+### CSS Modules
+
+As an alternative to scoped styles, you can use CSS modules to scope your CSS to your components by adding the `module` attribute to any `<style>` tag in your component file and accessing the styles via the `$style` property:
+```html
+<style module>
+/* Will only be applied to this component <a> elements */
+.red {
+   color: red;
+}
+</style>
+
+<template>
+  <div :class="$style.red">Red Text</div>
+</template>
+
+<script>
+  export default {
+    created() {
+      console.log(this.$style.red);
+    }
+  }
+</script>
+```
+
+By default, your styles will be assigned to the `$style` computed property. You can customize this by setting the module attribute. This also allows you to create multiple "modules" in one component file:
+
+```html
+<style module="foo">
+  .color {
+    color: orange;
+  }
+</style>
+<style module="bar">
+  .color {
+    color: purple;
+  }
+</style>
+
+<template>
+  <div :class="foo.color">Foo Text</div>
+  <div :class="bar.color">Bar Text</div>
+</template>
+```
+
+Note: composing from other files is not supported by the built-in CSS modules processor. See the community packages.
+
 ### Language packages
 
 Using the power of preprocessors, you can use a different language (like less or jade) by adding a `lang` attribute on your `<template>`, `<script>` or `<style>` tags.
 
-Official packages for `<template>` tag:
+Packages for `<template>` tag:
 
+- [akryum:vue-pug](https://github.com/Akryum/vue-meteor/tree/master/packages/vue-pug)
 - [akryum:vue-jade](https://github.com/Akryum/meteor-vue-component/tree/master/packages/vue-jade)
 
-Official packages from `<script>` tag:
+Packages for `<script>` tag:
 
  - [akryum:vue-coffee](https://github.com/Akryum/meteor-vue-component/tree/master/packages/vue-coffee)
+ - [nathantreid:vue-typescript](https://github.com/nathantreid/meteor-vue-typescript)
 
-Official packages for `<style>` tag:
+Packages for `<style>` tag:
 
  - [akryum:vue-less](https://github.com/Akryum/meteor-vue-component/tree/master/packages/vue-less)
  - [akryum:vue-sass](https://github.com/Akryum/meteor-vue-component/tree/master/packages/vue-sass)
  - [akryum:vue-stylus](https://github.com/Akryum/meteor-vue-component/tree/master/packages/vue-stylus)
+ - [nathantreid:vue-css-modules](https://github.com/nathantreid/vue-css-modules) enables interop with nathantreid:css-modules, including support for composing from other files.
 
-Community packages welcomed (add a your package with a PR)!
+Get involved! Add your own package with a PR! :+1:
+
+### JSX
+
+To add JSX support, install the following packages:
+
+```
+meteor npm i -D babel-plugin-syntax-jsx babel-plugin-transform-vue-jsx
+```
+
+Then add a `.babelrc` file in the root directory of the meteor project with the following content:
+
+```json
+{
+  "plugins": [
+    "transform-vue-jsx"
+  ]
+}
+```
+
+You can now use JSX in your Vue components:
+
+```html
+<script>
+export default {
+  render (h) {
+    return <div class="home">
+      <h1>#404</h1>
+    </div>
+  }
+}
+</script>
+```
 
 ### Manual import
 
@@ -142,6 +232,26 @@ For example, you can add the following `.vueignore` file to your app inorder to 
 
 ```
 node_modules/
+```
+
+### Using Vue npm packages
+
+Most of the time, you need to ignore the compilation of Vue files inside the `node_modules` directory.
+
+Add a `.vueignore` file in the project root with the following content:
+
+```
+node_modules/
+```
+
+The npm packages should have distribution/compiled files (or try to tell their authors if they are missing). You should directly import these if you have any issue.
+
+For example, to use the [keen-ui](https://github.com/JosephusPaye/keen-ui) package, install the plugin in your app using the dist files:
+
+```javascript
+import 'keen-ui/dist/keen-ui.min.css'
+import KeenUI from 'keen-ui/dist/keen-ui.min.js'
+Vue.use(KeenUI)
 ```
 
 ---
